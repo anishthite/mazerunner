@@ -33,6 +33,7 @@ void loop() {
 long microsecondsToInches(long microseconds) {
    return microseconds / 74 / 2;
 }
+//returns inches from ultrasonic sensors
 long getinches(int pingPin, int echoPin){
    long duration, inches;
    pinMode(pingPin, OUTPUT);
