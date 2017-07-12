@@ -5,14 +5,14 @@
 TECBot_PWMServoDriver drive = TECBot_PWMServoDriver();
 
 //left pins
-const int leftpingPin = 10; // Trigger Pin of Ultrasonic Sensor  
-const int leftechoPin = 11; // Echo Pin of Ultrasonic Sensor
+const int leftPingPin = 10; // Trigger Pin of Ultrasonic Sensor  
+const int leftEchoPin = 11; // Echo Pin of Ultrasonic Sensor
 //right pins
-const int centerpingPin = 8; // Trigger Pin of Ultrasonic Sensor  
-const int centerechoPin = 9; // Echo Pin of Ultrasonic Sensor
+const int centerPingPin = 8; // Trigger Pin of Ultrasonic Sensor  
+const int centerEchoPin = 9; // Echo Pin of Ultrasonic Sensor
 //center pins
-const int rightpingPin = 13; // Trigger Pin of Ultrasonic Sensor  
-const int rightechoPin = 12; // Echo Pin of Ultrasonic Sensor
+const int rightPingPin = 13; // Trigger Pin of Ultrasonic Sensor  
+const int rightEchoPin = 12; // Echo Pin of Ultrasonic Sensor
 
 void setup() {
   // put your setup code here, to run once:
@@ -28,7 +28,13 @@ void setup() {
 }
 
 void loop() {
-
+Serial.print(getinches(leftPingPin, leftEchoPin));
+Serial.print("\t");
+Serial.print(getinches(centerPingPin, centerEchoPin));
+Serial.print("\t");
+Serial.print(getinches(rightPingPin, rightEchoPin));
+Serial.println(" ");
+delay(100);
 }
 long microsecondsToInches(long microseconds) {
    return microseconds / 74 / 2;
