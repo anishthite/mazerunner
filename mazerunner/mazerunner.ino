@@ -2,17 +2,19 @@
 //Anish Thite, Jordan Schwartz, and Alex Scotte
 
 #include <TECBot_PWMServoDriver.h>
+#include <QTRSensors.h>
 TECBot_PWMServoDriver drive = TECBot_PWMServoDriver();
 
+#define max_speed 30
 //left pins
 const int leftPingPin = 10; // Trigger Pin of Ultrasonic Sensor  
 const int leftEchoPin = 11; // Echo Pin of Ultrasonic Sensor
-//right pins
+//center pins
 const int centerPingPin = 8; // Trigger Pin of Ultrasonic Sensor  
 const int centerEchoPin = 9; // Echo Pin of Ultrasonic Sensor
-//center pins
-const int rightPingPin = 13; // Trigger Pin of Ultrasonic Sensor  
-const int rightEchoPin = 12; // Echo Pin of Ultrasonic Sensor
+//right pins
+const int rightPingPin = 12; // Trigger Pin of Ultrasonic Sensor  
+const int rightEchoPin = 13; // Echo Pin of Ultrasonic Sensor
 
 void setup() {
   // put your setup code here, to run once:
@@ -28,6 +30,34 @@ void setup() {
 }
 
 void loop() {
+
+// go forward if all sensors are activated or path is already explored
+if (getinches(centerPingPin,centerEchoPin) > 3 && getinches(leftPingPin,leftEchoPin)< 6 && getinches(rightPingPin,rightEchoPin) < 6){ 
+    //if veering left
+    if (getinches(leftPingPin,leftEchoPin) < getinches(rightPingPin,rightEchoPin)){
+          drive.setDrive(10,5);  
+    }
+    //if veering right
+    if (getinches(leftPingPin,leftEchoPin) > getinches(rightPingPin,rightEchoPin)){
+          drive.setDrive(5,10);
+    }
+    else{
+      drive.setDrive(5,5);
+    }
+}
+//goes forward to center itself in cell
+drive.setDrive(5,5);
+delay(100);
+
+// classify junction
+//decide and act
+
+
+//stop all 
+else{
+drive.setDrive(0,0); 
+}
+
 Serial.print(getinches(leftPingPin, leftEchoPin));
 Serial.print("\t");
 Serial.print(getinches(centerPingPin, centerEchoPin));
