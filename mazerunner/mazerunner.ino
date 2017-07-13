@@ -1,6 +1,6 @@
 //Mazerunner - a maze solving robot
 //Anish Thite, Jordan Schwartz, and Alex Scotte
-
+// the walls are 12 inches long with a 0.5-1 inch gap between them
 #include <TECBot_PWMServoDriver.h>
 #include <QTRSensors.h>
 TECBot_PWMServoDriver drive = TECBot_PWMServoDriver();
