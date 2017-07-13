@@ -74,7 +74,7 @@ long getinches(int pingPin, int echoPin){
    return inches;
   
 }
-<<<<<<< HEAD
+
 void goforward(){
     // go forward if all sensors are activated or path is already explored
   if (getinches(centerPingPin,centerEchoPin) > 3 && getinches(leftPingPin,leftEchoPin)< 6 && getinches(rightPingPin,rightEchoPin) < 6){ 
@@ -98,7 +98,7 @@ void goforward(){
   delay(100);
 }
 
-=======
+
 void turnLeft90 (){
   float delayy = 335;// a delay of ___ results in 90 degree turn
   drive.setDrive(-30,15);
@@ -117,4 +117,4 @@ void turnRight90 (){
   delay(delayy);
   drive.setDrive(0,0);
 }
->>>>>>> origin/master
+
