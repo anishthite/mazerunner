@@ -40,6 +40,7 @@ void setup() {
 void loop() {
 
 //go forward until stop
+goforward();
 // classify junction
 //decide and act
 
@@ -94,11 +95,13 @@ void goforward(){
     drive.setDrive(0,0); 
   }
   //goes forward to center itself in cell
-  drive.setDrive(5,5);
-  delay(100);
+
 }
-
-
+//classifies the element and stores it in the array
+//classifies: null: not been there yet 0: only one way up 1: dead end 2: 2 way junction 3: 3 way junction 
+void classifystore(){}
+//void decide(){}
+//void turn()}{
 void turnLeft90 (){
   float delayy = 335;// a delay of ___ results in 90 degree turn
   drive.setDrive(-30,15);
@@ -117,12 +120,4 @@ void turnRight90 (){
   delay(delayy);
   drive.setDrive(0,0);
 }
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
->>>>>>> 5241ce827c2e273727d6910a035334ec0080b233
->>>>>>> origin/master
