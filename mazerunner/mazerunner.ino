@@ -56,12 +56,13 @@ Serial.print(getinches(rightPingPin, rightEchoPin));
 Serial.println(" ");
 delay(100);
 }
-long microsecondsToInches(long microseconds) {
-   return microseconds / 74 / 2;
+long microsecondsToCentimeters(long microseconds) {
+   return microseconds / 29 / 2;
 }
+
 //returns inches from ultrasonic sensors
-long getinches(int pingPin, int echoPin){
-   long duration, inches;
+int getinches(int pingPin,int echoPin) {
+   long duration, inches, cm;
    pinMode(pingPin, OUTPUT);
    digitalWrite(pingPin, LOW);
    delayMicroseconds(2);
@@ -70,10 +71,8 @@ long getinches(int pingPin, int echoPin){
    digitalWrite(pingPin, LOW);
    pinMode(echoPin, INPUT);
    duration = pulseIn(echoPin, HIGH);
-   //Serial.println(duration);
-   inches = microsecondsToInches(duration);
-   return inches;
-  
+   cm = microsecondsToCentimeters(duration);
+   return cm;
 }
 
 void goforward(){
@@ -119,5 +118,23 @@ void turnRight90 (){
   drive.setDrive(30,-15);
   delay(delayy);
   drive.setDrive(0,0);
+}
+void PIDUltra() {
+  float f,l,r,lastError,i;
+  l = getinches(leftPingPin,leftEchoPin);
+  r = getinches(rightPingPin, rightEchoPin);
+  f = getinches(centerPingPin, centerEchoPin);
+
+  float error = l - r;
+  
+  float speedDifference = error/5 + i + (error - lastError);
+  lastError = error;
+  float rightMotor = max_speed + speedDifference;
+  float leftMotor = max_speed - speedDifference;
+  rightMotor = constrain(rightMotor,0,max_speed);
+  leftMotor = constrain(leftMotor,0,max_speed);
+  i += error;
+  drive.setDrive(leftMotor,rightMotor);
+  delay(100);
 }
 
