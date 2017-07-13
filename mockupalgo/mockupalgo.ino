@@ -28,11 +28,11 @@ void setup() {
 }
 
 void loop() {
-Serial.print(getinches(leftPingPin, leftEchoPin));
+Serial.print(distance_1(leftPingPin, leftEchoPin));
 Serial.print("\t");
 Serial.print(getinches(centerPingPin, centerEchoPin));
 Serial.print("\t");
-Serial.print(getinches(rightPingPin, rightEchoPin));
+Serial.print(distance(rightPingPin, rightEchoPin));
 Serial.println(" ");
 delay(100);
 }
