@@ -5,7 +5,7 @@
 #include <QTRSensors.h>
 TECBot_PWMServoDriver drive = TECBot_PWMServoDriver();
 
-#define max_speed 30
+#define max_speed 7
 //left pins
 const int leftPingPin = 10; // Trigger Pin of Ultrasonic Sensor  
 const int leftEchoPin = 11; // Echo Pin of Ultrasonic Sensor
@@ -77,7 +77,7 @@ int getinches(int pingPin,int echoPin) {
 
 void goforward(){
     // go forward if all sensors are activated or path is already explored
-  if (getinches(centerPingPin,centerEchoPin) > 3 && getinches(leftPingPin,leftEchoPin)< 6 && getinches(rightPingPin,rightEchoPin) < 6){ 
+  /*if (getinches(centerPingPin,centerEchoPin) > 7 && getinches(leftPingPin,leftEchoPin)< 15 && getinches(rightPingPin,rightEchoPin) < 15){ 
     //if veering left
     if (getinches(leftPingPin,leftEchoPin) < getinches(rightPingPin,rightEchoPin)){
           drive.setDrive(10,5);  
@@ -92,9 +92,27 @@ void goforward(){
   }
   else{
     drive.setDrive(0,0); 
-  }
-  //goes forward to center itself in cell
+  }*/
+while (getinches(centerPingPin,centerEchoPin) > 7 && getinches(leftPingPin,leftEchoPin) < 15 && getinches(rightPingPin,rightEchoPin) < 15){
+  float f,l,r,lastError,i;
+  l = getinches(leftPingPin,leftEchoPin);
+  r = getinches(rightPingPin, rightEchoPin);
+  f = getinches(centerPingPin, centerEchoPin);
 
+  float error = l - r;
+  
+  float speedDifference = error/3; //+ i + (error - lastError);
+  lastError = error;
+  float rightMotor = max_speed + speedDifference;
+  float leftMotor = max_speed - speedDifference;
+  rightMotor = constrain(rightMotor,0,max_speed);
+  leftMotor = constrain(leftMotor,0,max_speed);
+  i += error;
+  drive.setDrive(leftMotor,rightMotor);
+  delay(100);
+  //goes forward to center itself in cell
+}
+drive.setDrive(0,0);
 }
 //classifies the element and stores it in the array
 //classifies: null: not been there yet 0: only one way up 1: dead end 2: 2 way junction 3: 3 way junction 
