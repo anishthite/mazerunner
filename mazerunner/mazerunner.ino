@@ -21,7 +21,7 @@ const int rightEchoPin = 13; // Echo Pin of Ultrasonic Sensor
 #define height 4
 int posrow  = 0;
 int poscol =  3; 
-
+int heading = 0;
 int maze[width][height];
 
 void setup() {
@@ -45,13 +45,11 @@ void setup() {
 
 void loop() {
 
-//go forward until stop
-goforward();
-// classify junction
-//decide and act
+decide(classifystore());
+ 
 
 
-//stop all 
+
 
 
 Serial.print(getinches(leftPingPin, leftEchoPin));
@@ -62,6 +60,10 @@ Serial.print(getinches(rightPingPin, rightEchoPin));
 Serial.println(" ");
 delay(100);
 }
+
+
+
+
 long microsecondsToCentimeters(long microseconds) {
    return microseconds / 29 / 2;
 }
@@ -99,8 +101,11 @@ void goforward(){
   else{
     drive.setDrive(0,0); 
   }*/
-while (getinches(centerPingPin,centerEchoPin) > 7 && getinches(leftPingPin,leftEchoPin) < 15 && getinches(rightPingPin,rightEchoPin) < 15){
-  float f,l,r,lastError,i;
+float start = getinches(centerPingPin,centerEchoPin);
+float endpoint = start - 33;
+float f,l,r,lastError,i;
+while (f >= endpoint){
+
   l = getinches(leftPingPin,leftEchoPin);
   r = getinches(rightPingPin, rightEchoPin);
   f = getinches(centerPingPin, centerEchoPin);
@@ -122,15 +127,15 @@ drive.setDrive(0,0);
 }
 //classifies the element and stores it in the array
 //classifies: 0: not been there yet 1: only one way up  2: 2 way junction 3: 3 way junction 4: dead end 
-void classifystore(){  
+int classifystore(){  
   int path = 0;
-  if (getinches(leftPingPin,leftEchoPin) > 6){
+  if (getinches(leftPingPin,leftEchoPin) > 15){
     path +=1;  
   }
-  if (getinches(centerPingPin,centerEchoPin) > 6){
+  if (getinches(centerPingPin,centerEchoPin) > 15){
     path +=1;
   }
-  if (getinches(rightPingPin,rightEchoPin) > 6){
+  if (getinches(rightPingPin,rightEchoPin) > 15){
     path +=1;
   }
   //classify 1
@@ -152,16 +157,183 @@ void classifystore(){
   }
   return path;
 }
-void decide(){ //potentially can input path
-  if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) <= 6 && getinches(rightPingPin, rightEchoPin)>= 8) {
-      turnRight90 ();
-  }
-  if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) >= 8 && getinches(rightPingPin, rightEchoPin)> 6) {
-      turnLeft90 ();
+void decide(int path){ //potentially can input path
+  float f,l,r;
+  l = getinches(leftPingPin,leftEchoPin);
+  r = getinches(rightPingPin, rightEchoPin);
+  f = getinches(centerPingPin, centerEchoPin);
   
-  } 
-   if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) <= 8 && getinches(rightPingPin, rightEchoPin)<= 8) {
-      turn180 ();
+  if (path == 1) {
+      if(l > 15){turnLeft90();}
+      else if(r > 15){turnRight90();}
+      else if(f > 15){goforward();}
+  }
+
+
+  
+if (path == 2) {
+              if(l < 15){
+                if(heading == 0){
+                  if(maze[posrow+1][poscol]  == 0){
+                    goforward();
+                  }
+                  else{
+                    turnRight90();
+                    }
+                  }
+                if(heading == 90){
+                  if(maze[posrow][poscol+1] == 0){
+                    goforward();
+                  }
+                  else{
+                    turnRight90();
+                  }
+                }
+               if(heading == 180){
+                  if(maze[posrow-1][poscol] == 0){
+                    goforward();
+                  }
+                  else{
+                    turnRight90();
+                  }
+               }
+              if(heading == 270){
+                if(maze[posrow][poscol-1] == 0){
+                  goforward();
+                }
+                else{
+                  turnRight90();
+                }
+              }
+              }
+          
+          
+          
+              
+              if(r < 15){
+                if(heading == 0){
+                  if(maze[posrow][poscol-1]  == 0){
+                    turnLeft90();
+                  }
+                  else{
+                    goforward();
+                    }
+                  }
+                if(heading == 90){
+                  if(maze[posrow+1][poscol] == 0){
+                    turnLeft90();
+                  }
+                  else{
+                    goforward();
+                  }
+                }
+               if(heading == 180){
+                  if(maze[posrow][poscol+1] == 0){
+                    turnLeft90();
+                  }
+                  else{
+                    goforward();
+                  }
+               }
+              if(heading == 270){
+                if(maze[posrow-1][poscol] == 0){
+                  turnLeft90();
+                }
+                else{
+                  goforward();
+                }
+              }
+              }
+          
+                
+                
+          }
+              if(f < 15){
+                if(heading == 0){
+                  if(maze[posrow][poscol-1]  == 0){
+                    turnLeft90();
+                  }
+                  else{
+                    turnRight90();
+                    }
+                  }
+                if(heading == 90){
+                  if(maze[posrow+1][poscol] == 0){
+                    turnLeft90();
+                  }
+                  else{
+                    turnRight90();
+                  }
+                }
+               if(heading == 180){
+                  if(maze[posrow][poscol+1] == 0){
+                    turnLeft90();
+                  }
+                  else{
+                    turnRight90();
+                  }
+               }
+              if(heading == 270){
+                if(maze[posrow-1][poscol] == 0){
+                  turnLeft90();
+                }
+                else{
+                  turnRight90();
+                }
+              }
+              }
+          
+
+       
+   if (path == 3) {
+      if(heading == 0){
+        if(maze[posrow][poscol+1]  == 0){
+          turnRight90();
+        }
+        else if(maze[posrow+1][poscol] == 0){
+          goforward();
+          }
+        else{
+          turnRight90();
+        }
+        }
+      if(heading == 90){
+        if(maze[posrow-1][poscol] == 0){
+          turnRight90();
+        }
+        else if(maze[posrow][poscol+1] == 0){
+          goforward();
+        }
+        else{
+          turnRight90();
+        }
+      }
+     if(heading == 180){
+        if(maze[posrow][poscol-1] == 0){
+          turnRight90();
+        }
+        else if(maze[posrow-1][poscol] == 0){
+          goforward();
+        }
+        else{
+          turnRight90();
+        }
+     }
+    if(heading == 270){
+      if(maze[posrow+1][poscol] == 0){
+        turnRight90();
+      }
+      else if(maze[posrow][poscol-1]){
+        goforward();
+      }
+      else{
+        turnRight90();
+      }
+    }
+    }
+
+   if (path == 4){
+      turn180();
    }
 }
 //void turn()}{
@@ -170,18 +342,33 @@ void turnLeft90 (){
   drive.setDrive(-30,15);
   delay(delayy);
   drive.setDrive(0,0);
+  heading += 270;
+  if(heading >= 360){
+    heading -= 360;
+  }
+  goforward();
 }
 void turn180 (){
   float delayy = 573;// a delay of ___ results in 90 degree turn
   drive.setDrive(-30,15);
   delay(delayy);
   drive.setDrive(0,0);
+  heading += 180;
+  if(heading >= 360){
+    heading -=360;
+  }
+  goforward();
 }
 void turnRight90 (){
   float delayy = 305;// a delay of ___ results in 90 degree turn
   drive.setDrive(30,-15);
   delay(delayy);
   drive.setDrive(0,0);
+  heading += 90;
+  if(heading >=360){
+    heading -= 360;
+  }
+  goforward();
 }
 void PIDUltra() {
   float f,l,r,lastError,i;
@@ -201,4 +388,20 @@ void PIDUltra() {
   drive.setDrive(leftMotor,rightMotor);
   delay(100);
 }
+void updatePosition(){
+  if(heading == 0){
+    posrow++;
+  }
+  if(heading == 90){
+    poscol++;
+  }
+  if(heading == 180){
+    posrow--;
+  }
+  if(heading == 270){
+    poscol--;
+  }
+  
+}
+
 
