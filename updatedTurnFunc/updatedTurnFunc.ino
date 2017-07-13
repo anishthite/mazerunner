@@ -14,17 +14,23 @@ void setup() {
   drive.setDrive(0,0);
   delay(1500);
 
-  turn(90);
 }
 
 void loop() {
 
 }
 
-void turn (int i){
-  float delayy = i*7.22;// a delay of ___ results in 90 degree turn
-  drive.setDrive(-15,7.5);
+void turn90 (){
+  float delayy = 165;// a delay of ___ results in 90 degree turn
+  drive.setDrive(-100,100);
   delay(delayy);
   drive.setDrive(0,0);
 }
+void turn180 (){
+  float delayy = 313;// a delay of ___ results in 90 degree turn
+  drive.setDrive(-100,100);
+  delay(delayy);
+  drive.setDrive(0,0);
+}
+
 
