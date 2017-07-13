@@ -16,6 +16,14 @@ const int centerEchoPin = 9; // Echo Pin of Ultrasonic Sensor
 const int rightPingPin = 12; // Trigger Pin of Ultrasonic Sensor  
 const int rightEchoPin = 13; // Echo Pin of Ultrasonic Sensor
 
+//algorithim setup contingency if dynamic doesnt work
+#define width 3
+#define height 4
+#define startuprow 0
+#define startupcol 3 
+
+int maze[width][height];
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600); // Starting Serial Terminal
@@ -31,32 +39,13 @@ void setup() {
 
 void loop() {
 
-// go forward if all sensors are activated or path is already explored
-if (getinches(centerPingPin,centerEchoPin) > 3 && getinches(leftPingPin,leftEchoPin)< 6 && getinches(rightPingPin,rightEchoPin) < 6){ 
-    //if veering left
-    if (getinches(leftPingPin,leftEchoPin) < getinches(rightPingPin,rightEchoPin)){
-          drive.setDrive(10,5);  
-    }
-    //if veering right
-    if (getinches(leftPingPin,leftEchoPin) > getinches(rightPingPin,rightEchoPin)){
-          drive.setDrive(5,10);
-    }
-    else{
-      drive.setDrive(5,5);
-    }
-}
-//goes forward to center itself in cell
-drive.setDrive(5,5);
-delay(100);
-
+//go forward until stop
 // classify junction
 //decide and act
 
 
 //stop all 
-else{
-drive.setDrive(0,0); 
-}
+
 
 Serial.print(getinches(leftPingPin, leftEchoPin));
 Serial.print("\t");
@@ -85,3 +74,26 @@ long getinches(int pingPin, int echoPin){
    return inches;
   
 }
+void goforward(){
+    // go forward if all sensors are activated or path is already explored
+  if (getinches(centerPingPin,centerEchoPin) > 3 && getinches(leftPingPin,leftEchoPin)< 6 && getinches(rightPingPin,rightEchoPin) < 6){ 
+    //if veering left
+    if (getinches(leftPingPin,leftEchoPin) < getinches(rightPingPin,rightEchoPin)){
+          drive.setDrive(10,5);  
+    }
+    //if veering right
+    if (getinches(leftPingPin,leftEchoPin) > getinches(rightPingPin,rightEchoPin)){
+          drive.setDrive(5,10);
+    }
+    else{
+      drive.setDrive(5,5);
+    }
+  }
+  else{
+    drive.setDrive(0,0); 
+  }
+  //goes forward to center itself in cell
+  drive.setDrive(5,5);
+  delay(100);
+}
+
