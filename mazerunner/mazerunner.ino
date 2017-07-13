@@ -85,3 +85,21 @@ long getinches(int pingPin, int echoPin){
    return inches;
   
 }
+void turnLeft90 (){
+  float delayy = 335;// a delay of ___ results in 90 degree turn
+  drive.setDrive(-30,15);
+  delay(delayy);
+  drive.setDrive(0,0);
+}
+void turn180 (){
+  float delayy = 573;// a delay of ___ results in 90 degree turn
+  drive.setDrive(-30,15);
+  delay(delayy);
+  drive.setDrive(0,0);
+}
+void turnRight90 (){
+  float delayy = 305;// a delay of ___ results in 90 degree turn
+  drive.setDrive(30,-15);
+  delay(delayy);
+  drive.setDrive(0,0);
+}
