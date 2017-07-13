@@ -19,8 +19,8 @@ const int rightEchoPin = 13; // Echo Pin of Ultrasonic Sensor
 //algorithim setup contingency if dynamic doesnt work
 #define width 3
 #define height 4
-#define startuprow 0
-#define startupcol 3 
+int posrow 0;
+int poscol 3; 
 
 int maze[width][height];
 
@@ -35,6 +35,12 @@ void setup() {
   //Arm the ESC's by sending a "neutral" signal for 1.5 seconds
   drive.setDrive(0,0);
   delay(1500);
+//instantiate array
+  for (int i = 0; i < width; i++){
+   for (int j = 0; j < height; j++){
+      maze[i][j] = 0;
+    }  
+  }
 }
 
 void loop() {
@@ -115,8 +121,35 @@ while (getinches(centerPingPin,centerEchoPin) > 7 && getinches(leftPingPin,leftE
 drive.setDrive(0,0);
 }
 //classifies the element and stores it in the array
-//classifies: null: not been there yet 0: only one way up 1: dead end 2: 2 way junction 3: 3 way junction 
-void classifystore(){}
+//classifies: 0: not been there yet 1: only one way up  2: 2 way junction 3: 3 way junction 4: dead end 
+void classifystore(){  
+  int path = 0;
+  if (getinches(leftPingPin,leftEchoPin) > 6){
+    path +=1;  
+  }
+  if (getinches(centerPingPin,centerEchoPin) > 6){
+    path +=1;
+  }
+  if (getinches(rightPingPin,rightEchoPin) > 6){
+    path +=1;
+  }
+  //classify 1
+  if (path == 1){
+    maze[posrow][pocol] = 1;       
+  }
+  //classify 2
+  if (path == 2){
+    maze[posrow][pocol] = 2;
+  }
+  //classify 3
+  if (path == 3){
+    maze[posrow][pocol] = 3;
+  }
+  //classify 4  
+  if (path == 0){
+    maze[posrow][pocol] = 4;
+  }
+}
 //void decide(){}
 //void turn()}{
 void turnLeft90 (){
