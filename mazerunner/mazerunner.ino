@@ -46,18 +46,24 @@ void setup() {
 void loop() {
 
 decide(classifystore());
- 
+updatePosition();
+for (int i = 0; i < width; i++){
+   for (int j = 0; j < height; j++){
+      Serial.print(maze[i][j]);
+    }
+    Serial.println(" ");  
+} 
 
 
 
 
 
-Serial.print(getinches(leftPingPin, leftEchoPin));
-Serial.print("\t");
-Serial.print(getinches(centerPingPin, centerEchoPin));
-Serial.print("\t");
-Serial.print(getinches(rightPingPin, rightEchoPin));
-Serial.println(" ");
+//Serial.print(getinches(leftPingPin, leftEchoPin));
+//Serial.print("\t");
+//Serial.print(getinches(centerPingPin, centerEchoPin));
+//Serial.print("\t");
+//Serial.print(getinches(rightPingPin, rightEchoPin));
+//Serial.println(" ");
 delay(100);
 }
 
