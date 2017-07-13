@@ -5,6 +5,8 @@
 #include <QTRSensors.h>
 TECBot_PWMServoDriver drive = TECBot_PWMServoDriver();
 
+
+int lastError = 0;
 #define max_speed 7
 //left pins
 const int leftPingPin = 10; // Trigger Pin of Ultrasonic Sensor  
@@ -18,10 +20,10 @@ const int rightEchoPin = 13; // Echo Pin of Ultrasonic Sensor
 
 //algorithim setup contingency if dynamic doesnt work
 #define width 3
-#define height 4
-int posrow  = 0;
-int poscol =  3; 
-int heading = 0;
+#define height 5
+int posrow  = 4;
+int poscol =  0; 
+int heading = 90;
 int maze[width][height];
 
 void setup() {
@@ -35,6 +37,8 @@ void setup() {
   //Arm the ESC's by sending a "neutral" signal for 1.5 seconds
   drive.setDrive(0,0);
   delay(1500);
+
+          //Turn the LED off
 //instantiate array
   for (int i = 0; i < width; i++){
    for (int j = 0; j < height; j++){
@@ -44,9 +48,11 @@ void setup() {
 }
 
 void loop() {
-
+//
 decide(classifystore());
 updatePosition();
+
+
 for (int i = 0; i < width; i++){
    for (int j = 0; j < height; j++){
       Serial.print(maze[i][j]);
@@ -88,12 +94,16 @@ int getinches(int pingPin,int echoPin) {
    cm = microsecondsToCentimeters(duration);
    return cm;
 }
-
 void goforward(){
+  drive.setDrive(-10,-10);
+  delay(1000);
+  Serial.println("going forward");
+}
+//void goforward2(){
     // go forward if all sensors are activated or path is already explored
-  /*if (getinches(centerPingPin,centerEchoPin) > 7 && getinches(leftPingPin,leftEchoPin)< 15 && getinches(rightPingPin,rightEchoPin) < 15){ 
+//  if (getinches(centerPingPin,centerEchoPin) > 7 && getinches(leftPingPin,leftEchoPin)< 15 && getinches(rightPingPin,rightEchoPin) < 15){ 
     //if veering left
-    if (getinches(leftPingPin,leftEchoPin) < getinches(rightPingPin,rightEchoPin)){
+    /*if (getinches(leftPingPin,leftEchoPin) < getinches(rightPingPin,rightEchoPin)){
           drive.setDrive(10,5);  
     }
     //if veering right
@@ -103,11 +113,11 @@ void goforward(){
     else{
       drive.setDrive(5,5);
     }
-  }
-  else{
-    drive.setDrive(0,0); 
-  }*/
-float start = getinches(centerPingPin,centerEchoPin);
+ 
+
+  delay(100);
+}*/
+/*float start = getinches(centerPingPin,centerEchoPin);
 float endpoint = start - 33;
 float f,l,r,lastError,i;
 while (f >= endpoint){
@@ -129,8 +139,8 @@ while (f >= endpoint){
   delay(100);
   //goes forward to center itself in cell
 }
-drive.setDrive(0,0);
-}
+drive.setDrive(0,0);*/
+//}
 //classifies the element and stores it in the array
 //classifies: 0: not been there yet 1: only one way up  2: 2 way junction 3: 3 way junction 4: dead end 
 int classifystore(){  
@@ -161,6 +171,7 @@ int classifystore(){
     maze[posrow][poscol] = 4;
     path = 4;
   }
+  Serial.println("classifying");
   return path;
 }
 void decide(int path){ //potentially can input path
@@ -171,7 +182,7 @@ void decide(int path){ //potentially can input path
   
   if (path == 1) {
       if(l > 15){turnLeft90();}
-      else if(r > 15){turnRight90();}
+      else if(r > 15){turnRight90();goforward();}
       else if(f > 15){goforward();}
   }
 
@@ -185,6 +196,7 @@ if (path == 2) {
                   }
                   else{
                     turnRight90();
+                    goforward();
                     }
                   }
                 if(heading == 90){
@@ -193,6 +205,7 @@ if (path == 2) {
                   }
                   else{
                     turnRight90();
+                    goforward();
                   }
                 }
                if(heading == 180){
@@ -201,6 +214,7 @@ if (path == 2) {
                   }
                   else{
                     turnRight90();
+                    goforward();
                   }
                }
               if(heading == 270){
@@ -209,6 +223,7 @@ if (path == 2) {
                 }
                 else{
                   turnRight90();
+                  goforward();
                 }
               }
               }
@@ -220,6 +235,7 @@ if (path == 2) {
                 if(heading == 0){
                   if(maze[posrow][poscol-1]  == 0){
                     turnLeft90();
+                    goforward();
                   }
                   else{
                     goforward();
@@ -228,6 +244,7 @@ if (path == 2) {
                 if(heading == 90){
                   if(maze[posrow+1][poscol] == 0){
                     turnLeft90();
+                    goforward();
                   }
                   else{
                     goforward();
@@ -236,6 +253,7 @@ if (path == 2) {
                if(heading == 180){
                   if(maze[posrow][poscol+1] == 0){
                     turnLeft90();
+                    goforward();
                   }
                   else{
                     goforward();
@@ -244,6 +262,7 @@ if (path == 2) {
               if(heading == 270){
                 if(maze[posrow-1][poscol] == 0){
                   turnLeft90();
+                  goforward();
                 }
                 else{
                   goforward();
@@ -258,33 +277,41 @@ if (path == 2) {
                 if(heading == 0){
                   if(maze[posrow][poscol-1]  == 0){
                     turnLeft90();
+                    goforward();
                   }
                   else{
                     turnRight90();
+                    goforward();
                     }
                   }
                 if(heading == 90){
                   if(maze[posrow+1][poscol] == 0){
                     turnLeft90();
+                    goforward();
                   }
                   else{
                     turnRight90();
+                    goforward();
                   }
                 }
                if(heading == 180){
                   if(maze[posrow][poscol+1] == 0){
                     turnLeft90();
+                    goforward();
                   }
                   else{
                     turnRight90();
+                    goforward();
                   }
                }
               if(heading == 270){
                 if(maze[posrow-1][poscol] == 0){
                   turnLeft90();
+                  goforward();
                 }
                 else{
                   turnRight90();
+                  goforward();
                 }
               }
               }
@@ -295,45 +322,53 @@ if (path == 2) {
       if(heading == 0){
         if(maze[posrow][poscol+1]  == 0){
           turnRight90();
+          goforward();
         }
         else if(maze[posrow+1][poscol] == 0){
           goforward();
           }
         else{
           turnRight90();
+          goforward();
         }
         }
       if(heading == 90){
         if(maze[posrow-1][poscol] == 0){
           turnRight90();
+          goforward();
         }
         else if(maze[posrow][poscol+1] == 0){
           goforward();
         }
         else{
           turnRight90();
+          goforward();
         }
       }
      if(heading == 180){
         if(maze[posrow][poscol-1] == 0){
           turnRight90();
+          goforward();
         }
         else if(maze[posrow-1][poscol] == 0){
           goforward();
         }
         else{
           turnRight90();
+          goforward();
         }
      }
     if(heading == 270){
       if(maze[posrow+1][poscol] == 0){
         turnRight90();
+        goforward();
       }
       else if(maze[posrow][poscol-1]){
         goforward();
       }
       else{
         turnRight90();
+        goforward();
       }
     }
     }
@@ -349,32 +384,39 @@ void turnLeft90 (){
   delay(delayy);
   drive.setDrive(0,0);
   heading += 270;
+  goforward();
   if(heading >= 360){
     heading -= 360;
   }
-  goforward();
+  Serial.println("turning left");
+
 }
 void turn180 (){
   float delayy = 573;// a delay of ___ results in 90 degree turn
   drive.setDrive(-30,15);
   delay(delayy);
   drive.setDrive(0,0);
+  goforward();
   heading += 180;
   if(heading >= 360){
     heading -=360;
   }
-  goforward();
+  Serial.println("turning around");
+
 }
 void turnRight90 (){
   float delayy = 305;// a delay of ___ results in 90 degree turn
   drive.setDrive(30,-15);
   delay(delayy);
   drive.setDrive(0,0);
+  goforward();
   heading += 90;
   if(heading >=360){
     heading -= 360;
   }
-  goforward();
+  Serial.println("turning right");
+
+
 }
 void PIDUltra() {
   float f,l,r,lastError,i;
