@@ -137,6 +137,17 @@ void turnRight90 (){
   delay(delayy);
   drive.setDrive(0,0);
 }
+void decide(){
+  if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) <= 6 && getinches(rightPingPin, rightEchoPin)>= 8) {
+      turnRight90 ();
+  }
+  if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) >= 8 && getinches(rightPingPin, rightEchoPin)> 6) {
+      turnLeft90 ();
+  
+  } 
+   if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) <= 8 && getinches(rightPingPin, rightEchoPin)<= 8) {
+      turn180 ();
+}
 void PIDUltra() {
   float f,l,r,lastError,i;
   l = getinches(leftPingPin,leftEchoPin);
