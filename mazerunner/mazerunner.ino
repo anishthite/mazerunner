@@ -19,8 +19,8 @@ const int rightEchoPin = 13; // Echo Pin of Ultrasonic Sensor
 //algorithim setup contingency if dynamic doesnt work
 #define width 3
 #define height 4
-int posrow 0;
-int poscol 3; 
+int posrow  = 0;
+int poscol =  3; 
 
 int maze[width][height];
 
@@ -135,22 +135,35 @@ void classifystore(){
   }
   //classify 1
   if (path == 1){
-    maze[posrow][pocol] = 1;       
+    maze[posrow][poscol] = 1;       
   }
   //classify 2
   if (path == 2){
-    maze[posrow][pocol] = 2;
+    maze[posrow][poscol] = 2;
   }
   //classify 3
   if (path == 3){
-    maze[posrow][pocol] = 3;
+    maze[posrow][poscol] = 3;
   }
   //classify 4  
   if (path == 0){
-    maze[posrow][pocol] = 4;
+    maze[posrow][poscol] = 4;
+    path = 4;
   }
+  return path;
 }
-//void decide(){}
+void decide(){ //potentially can input path
+  if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) <= 6 && getinches(rightPingPin, rightEchoPin)>= 8) {
+      turnRight90 ();
+  }
+  if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) >= 8 && getinches(rightPingPin, rightEchoPin)> 6) {
+      turnLeft90 ();
+  
+  } 
+   if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) <= 8 && getinches(rightPingPin, rightEchoPin)<= 8) {
+      turn180 ();
+   }
+}
 //void turn()}{
 void turnLeft90 (){
   float delayy = 335;// a delay of ___ results in 90 degree turn
@@ -169,17 +182,6 @@ void turnRight90 (){
   drive.setDrive(30,-15);
   delay(delayy);
   drive.setDrive(0,0);
-}
-void decide(){
-  if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) <= 6 && getinches(rightPingPin, rightEchoPin)>= 8) {
-      turnRight90 ();
-  }
-  if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) >= 8 && getinches(rightPingPin, rightEchoPin)> 6) {
-      turnLeft90 ();
-  
-  } 
-   if (getinches(centerPingPin, centerEchoPin)< 3 && getinches(leftPingPin, leftEchoPin) <= 8 && getinches(rightPingPin, rightEchoPin)<= 8) {
-      turn180 ();
 }
 void PIDUltra() {
   float f,l,r,lastError,i;
