@@ -85,13 +85,48 @@ void decide(int path){
     if(f > 15){goforward();}
   }
   else if(path == 2){
-    
+    if(r < 15){
+      int x = random(2);
+      if(x == 0){
+        turnLeft90();
+      }
+      else{
+        goforward();
+      }
+    }
+    if(l < 15){
+      int x = random(2);
+      if(x == 0){
+        turnRight90();
+      }
+      else{
+        goforward();
+      }
+    }
+    if(f < 15){
+      int x = random(2);
+      if(x == 0){
+        turnRight90();  
+      }
+      else{
+        turnLeft90();
+      }
+    }
   }
   else if(path == 3){
-    
+    int x = random(3);
+    if(x == 0){
+      turnLeft90();
+    }
+    else if(x == 1){
+      turnRight90();
+    }
+    else if(x == 2){
+      goforward();
+    }
   }
   else if(path == 0){
-    
+    turn180();
   }
 
 }
