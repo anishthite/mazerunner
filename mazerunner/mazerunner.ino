@@ -348,56 +348,69 @@ else if (path == 2) {
               }
           
 
-       
+       //need to fix the last case
    else if (path == 3) {
+      //heading is 0 
       if(heading == 0){
         if(maze[posrow][poscol+1]  == 0){
+          Serial.println(" path is 3, heading is 0, turning right (unexplored)");
           turnRight90();
 //          goforward();
         }
         else if(maze[posrow+1][poscol] == 0){
+          Serial.println(" path is 3, heading is 0, going forward (unexplored)");
           goforward();
           }
         else{
+          Serial.println(" path is 3, heading is 0, going forward");
           turnRight90();
 //          goforward();
         }
         }
       else if(heading == 90){
         if(maze[posrow-1][poscol] == 0){
+          Serial.println(" path is 3, heading is 90, turning right (unexplored)");
           turnRight90();
 //          goforward();
         }
         else if(maze[posrow][poscol+1] == 0){
+          Serial.println(" path is 3, heading is 90, going forward (unexplored)");
           goforward();
         }
         else{
+          Serial.println(" path is 3, heading is 90, turning right");
           turnRight90();
 //          goforward();
         }
       }
      else if(heading == 180){
         if(maze[posrow][poscol-1] == 0){
+          Serial.println(" path is 3, heading is 180, turning right (unexplored)");
           turnRight90();
 //          goforward();
         }
         else if(maze[posrow-1][poscol] == 0){
+          Serial.println(" path is 3, heading is 180, goign forward (unexplored)");
           goforward();
         }
         else{
+          Serial.println(" path is 3, heading is 180, turning right");
           turnRight90();
 //          goforward();
         }
      }
     else if(heading == 270){
       if(maze[posrow+1][poscol] == 0){
+        Serial.println(" path is 3, heading is 270, turning right (unexplored)");
         turnRight90();
 //        goforward();
       }
       else if(maze[posrow][poscol-1]){
+        Serial.println(" path is 3, heading is 270, go forward");
         goforward();
       }
       else{
+        Serial.println(" path is 3, heading is 270, turning right");
         turnRight90();
 //        goforward();
       }
@@ -407,7 +420,7 @@ else if (path == 2) {
    else if (path == 4){
       turn180();
    }
-   Serial.println(path);
+
 }
 //void turn()}{
 void turnLeft90 (){
