@@ -20,20 +20,21 @@ const int rightEchoPin = 13; // Echo Pin of Ultrasonic Sensor
 //algorithim setup contingency if dynamic doesnt work
 #define width 3
 #define height 4
-short posrow  = 4;
-short poscol =  0; 
-short heading = 90;
-short maze[width][height];
+int posrow  = 4;
+int poscol =  0; 
+int heading = 90;
+int maze[width][height];
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600); // Starting Serial Terminal
+  Serial.println("dns"); 
  //Initialize the PWM controller
   drive.begin();
   drive.setPWMFreq(60);
 
   delay(1500);
   //Arm the ESC's by sending a "neutral" signal for 1.5 seconds
-  drive(0,0);
+  drive.setDrive(0,0);
   delay(1500);
 
           //Turn the LED off
@@ -47,6 +48,7 @@ void setup() {
 
 void loop() {
 //
+Serial.println("loop");
 decide(classifystore());
 
 updatePosition();
