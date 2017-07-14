@@ -33,7 +33,7 @@ void setup() {
 
   delay(1500);
   //Arm the ESC's by sending a "neutral" signal for 1.5 seconds
-  Drive(0,0);
+  drive(0,0);
   delay(1500);
 
           //Turn the LED off
