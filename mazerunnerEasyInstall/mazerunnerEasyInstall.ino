@@ -16,7 +16,9 @@ const int centerEchoPin = 9; // Echo Pin of Ultrasonic Sensor
 //right pins
 const int rightPingPin = 12; // Trigger Pin of Ultrasonic Sensor  
 const int rightEchoPin = 13; // Echo Pin of Ultrasonic Sensor
-
+bool r;
+bool l;
+bool f;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600); // Starting Serial Terminal
@@ -32,7 +34,7 @@ void setup() {
 void loop() {
 
 decide(classifystore());
-delay(100);
+delay(10);
 
 }
 
@@ -61,28 +63,34 @@ int getinches(int pingPin,int echoPin) {
 
 int classifystore(){  
   int path = 0;
-  if (getinches(leftPingPin,leftEchoPin) > 30){
-    path +=1;  
-  }
-  delay(100);
-  if (getinches(centerPingPin,centerEchoPin) > 30){
+  if (getinches(leftPingPin,leftEchoPin) > 15){
     path +=1;
+    bool l = false;
   }
-  delay(100);
-  if (getinches(rightPingPin,rightEchoPin) > 30){
+  else{bool l = true;}
+  delay(10);
+  if (getinches(centerPingPin,centerEchoPin) > 15){
     path +=1;
+    bool f = false;
   }
-  delay(100);
+  else{bool f = true;}
+  delay(10);
+  if (getinches(rightPingPin,rightEchoPin) > 15){
+    path +=1;
+    bool r = false;
+  }
+  else{bool r = true;}
+  delay(10);
 
   return path;
 }
 void decide(int path){
   int r = getinches(rightPingPin, rightEchoPin);
-  delay(100);
+  delay(10);
   int l = getinches(leftPingPin, leftEchoPin);
-  delay(100);
+  delay(10);
   int f = getinches(centerPingPin, centerEchoPin);
-  delay(100);
+  delay(10);
   if(path == 1){
     if(r > 15){turnRight90();}
     else if(l > 15){turnLeft90();}
@@ -136,7 +144,7 @@ void decide(int path){
 }
 //void turn()}{
 void turnLeft90 (){
-  float delayy = 335;// a delay of ___ results in 90 degree turn
+  float delayy = 305;// a delay of ___ results in 90 degree turn
   drive.setDrive(-30,15);
   delay(delayy);
   drive.setDrive(0,0);
@@ -163,26 +171,53 @@ void turnRight90 (){
 
 }
 void goforward() {
-  float f = getinches(centerPingPin, centerEchoPin);
-  float endPoint = f-33;
+//  float f = getinches(centerPingPin, centerEchoPin);
+//  delay(100);
+//  float r = getinches(rightPingPin, rightEchoPin);
+//  delay(100);
+//  float l = getinches(leftPingPin, leftEchoPin);
+//  delay(100);
+//  
+//  float endPoint = f-33;
 
-  while(f > endPoint){
-    f = getinches(centerPingPin, centerEchoPin);
-    goforward2();
-    delay(100);
+  do{
+  if (getinches(leftPingPin,leftEchoPin) > 15){
+    bool l = false;
   }
+  else{bool l = true;}
+  delay(10);
+  if (getinches(centerPingPin,centerEchoPin) > 15){
+    bool f = false;
+  }
+  else{bool f = true;}
+  delay(10);
+  if (getinches(rightPingPin,rightEchoPin) > 15){
+    bool r = false;
+  }
+  else{bool r = true;}
+  
+  delay(10);
+  Serial.println("about to go forward");
+  goforward2();
+  
+  delay(10);
+  }while(r == true && l == true && f == false);
   drive.setDrive(0,0);
   
 }
 void goforward2(){
-    // go forward if all sensors are activated or path is already explored
-//  if (getinches(centerPingPin,centerEchoPin) > 7 && getinches(leftPingPin,leftEchoPin)< 15 && getinches(rightPingPin,rightEchoPin) < 15){ 
-    //if veering left
-    if (getinches(leftPingPin,leftEchoPin) < getinches(rightPingPin,rightEchoPin)){
+  float f = getinches(centerPingPin, centerEchoPin);
+  delay(10);
+  float r = getinches(rightPingPin, rightEchoPin);
+  delay(10);
+  float l = getinches(leftPingPin, leftEchoPin);
+  delay(10);
+    if (l < r){
           drive.setDrive(10,5);  
     }
+    delay(10);
     //if veering right
-    if (getinches(leftPingPin,leftEchoPin) > getinches(rightPingPin,rightEchoPin)){
+    if (l > r){
           drive.setDrive(5,10);
     }
     else{
