@@ -33,8 +33,6 @@ void loop() {
 
 decide(classifystore());
 
-delay(1000);
-
 }
 
 
@@ -136,6 +134,7 @@ void turnLeft90 (){
   drive.setDrive(-30,15);
   delay(delayy);
   drive.setDrive(0,0);
+  goforward();
 
   //Serial.println("turning left");
 
