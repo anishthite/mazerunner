@@ -32,6 +32,7 @@ void setup() {
 void loop() {
 
 decide(classifystore());
+delay(100);
 
 }
 
@@ -60,27 +61,32 @@ int getinches(int pingPin,int echoPin) {
 
 int classifystore(){  
   int path = 0;
-  if (getinches(leftPingPin,leftEchoPin) > 15){
+  if (getinches(leftPingPin,leftEchoPin) > 30){
     path +=1;  
   }
-  if (getinches(centerPingPin,centerEchoPin) > 15){
+  delay(100);
+  if (getinches(centerPingPin,centerEchoPin) > 30){
     path +=1;
   }
-  if (getinches(rightPingPin,rightEchoPin) > 15){
+  delay(100);
+  if (getinches(rightPingPin,rightEchoPin) > 30){
     path +=1;
   }
- 
+  delay(100);
+
   return path;
 }
 void decide(int path){
   int r = getinches(rightPingPin, rightEchoPin);
+  delay(100);
   int l = getinches(leftPingPin, leftEchoPin);
+  delay(100);
   int f = getinches(centerPingPin, centerEchoPin);
-  
+  delay(100);
   if(path == 1){
     if(r > 15){turnRight90();}
-    if(l > 15){turnLeft90();}
-    if(f > 15){goforward();}
+    else if(l > 15){turnLeft90();}
+    else if(f > 15){goforward();}
   }
   else if(path == 2){
     if(r < 15){
