@@ -25,7 +25,6 @@ int posrow  = 4;
 int poscol =  0; 
 int heading = 90;
 int maze[width][height];
-
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600); // Starting Serial Terminal
@@ -50,15 +49,17 @@ void setup() {
 void loop() {
 //
 decide(classifystore());
+Serial.println(heading);
+
 updatePosition();
-
-
-for (int i = 0; i < width; i++){
-   for (int j = 0; j < height; j++){
-      Serial.print(maze[i][j]);
-    }
-    Serial.println(" ");  
-} 
+delay(1000);
+//
+//for (int i = 0; i < width; i++){
+//   for (int j = 0; j < height; j++){
+//      Serial.print(maze[i][j]);
+//    }
+//    Serial.println(" ");  
+//} 
 
 
 
@@ -92,18 +93,25 @@ int getinches(int pingPin,int echoPin) {
    pinMode(echoPin, INPUT);
    duration = pulseIn(echoPin, HIGH);
    cm = microsecondsToCentimeters(duration);
+   //Serial.println("got distance");
    return cm;
 }
 void goforward(){
-  drive.setDrive(-10,-10);
-  delay(1000);
-  Serial.println("going forward");
+  float f = getinches(centerPingPin, centerEchoPin);
+  float endPoint = f-33;
+
+  while(f > endPoint){
+    f = getinches(centerPingPin, centerEchoPin);
+    goforward2();
+  }
+  drive.setDrive(0,0);
+  
 }
-//void goforward2(){
+void goforward2(){
     // go forward if all sensors are activated or path is already explored
 //  if (getinches(centerPingPin,centerEchoPin) > 7 && getinches(leftPingPin,leftEchoPin)< 15 && getinches(rightPingPin,rightEchoPin) < 15){ 
     //if veering left
-    /*if (getinches(leftPingPin,leftEchoPin) < getinches(rightPingPin,rightEchoPin)){
+    if (getinches(leftPingPin,leftEchoPin) < getinches(rightPingPin,rightEchoPin)){
           drive.setDrive(10,5);  
     }
     //if veering right
@@ -115,8 +123,8 @@ void goforward(){
     }
  
 
-  delay(100);
-}*/
+
+}
 /*float start = getinches(centerPingPin,centerEchoPin);
 float endpoint = start - 33;
 float f,l,r,lastError,i;
@@ -171,7 +179,6 @@ int classifystore(){
     maze[posrow][poscol] = 4;
     path = 4;
   }
-  Serial.println("classifying");
   return path;
 }
 void decide(int path){ //potentially can input path
@@ -181,14 +188,14 @@ void decide(int path){ //potentially can input path
   f = getinches(centerPingPin, centerEchoPin);
   
   if (path == 1) {
-      if(l > 15){turnLeft90();}
-      else if(r > 15){turnRight90();goforward();}
-      else if(f > 15){goforward();}
+      if(l > 15){turnLeft90(); Serial.println("path is 1, must turn left");}
+      else if(r > 15){turnRight90();goforward(); Serial.println("path is 1, must turn right");}
+      else if(f > 15){goforward();Serial.println("path is 1, must go forward");}
   }
 
 
   
-if (path == 2) {
+else if (path == 2) {
               if(l < 15){
                 if(heading == 0){
                   if(maze[posrow+1][poscol]  == 0){
@@ -196,34 +203,34 @@ if (path == 2) {
                   }
                   else{
                     turnRight90();
-                    goforward();
+//                    goforward();
                     }
                   }
-                if(heading == 90){
+                else if(heading == 90){
                   if(maze[posrow][poscol+1] == 0){
                     goforward();
                   }
                   else{
                     turnRight90();
-                    goforward();
+//                    goforward();
                   }
                 }
-               if(heading == 180){
+               else if(heading == 180){
                   if(maze[posrow-1][poscol] == 0){
-                    goforward();
+//                    goforward();
                   }
                   else{
                     turnRight90();
-                    goforward();
+//                    goforward();
                   }
                }
-              if(heading == 270){
+              else if(heading == 270){
                 if(maze[posrow][poscol-1] == 0){
-                  goforward();
+//                  goforward();
                 }
                 else{
                   turnRight90();
-                  goforward();
+//                  goforward();
                 }
               }
               }
@@ -231,38 +238,38 @@ if (path == 2) {
           
           
               
-              if(r < 15){
+              else if(r < 15){
                 if(heading == 0){
                   if(maze[posrow][poscol-1]  == 0){
                     turnLeft90();
-                    goforward();
+//                    goforward();
                   }
                   else{
                     goforward();
                     }
                   }
-                if(heading == 90){
+                else if(heading == 90){
                   if(maze[posrow+1][poscol] == 0){
                     turnLeft90();
-                    goforward();
+//                    goforward();
                   }
                   else{
                     goforward();
                   }
                 }
-               if(heading == 180){
+               else if(heading == 180){
                   if(maze[posrow][poscol+1] == 0){
                     turnLeft90();
-                    goforward();
+//                    goforward();
                   }
                   else{
                     goforward();
                   }
                }
-              if(heading == 270){
+              else if(heading == 270){
                 if(maze[posrow-1][poscol] == 0){
                   turnLeft90();
-                  goforward();
+//                  goforward();
                 }
                 else{
                   goforward();
@@ -273,109 +280,110 @@ if (path == 2) {
                 
                 
           }
-              if(f < 15){
+              else if(f < 15){
                 if(heading == 0){
                   if(maze[posrow][poscol-1]  == 0){
                     turnLeft90();
-                    goforward();
+//                    goforward();
                   }
                   else{
                     turnRight90();
-                    goforward();
+//                    goforward();
                     }
                   }
-                if(heading == 90){
+               else if(heading == 90){
                   if(maze[posrow+1][poscol] == 0){
                     turnLeft90();
-                    goforward();
+//                    goforward();
                   }
                   else{
                     turnRight90();
-                    goforward();
+//                    goforward();
                   }
                 }
-               if(heading == 180){
+               else if(heading == 180){
                   if(maze[posrow][poscol+1] == 0){
                     turnLeft90();
-                    goforward();
+//                    goforward();
                   }
                   else{
                     turnRight90();
-                    goforward();
+//                    goforward();
                   }
                }
-              if(heading == 270){
+              else if(heading == 270){
                 if(maze[posrow-1][poscol] == 0){
                   turnLeft90();
-                  goforward();
+//                  goforward();
                 }
                 else{
                   turnRight90();
-                  goforward();
+//                  goforward();
                 }
               }
               }
           
 
        
-   if (path == 3) {
+   else if (path == 3) {
       if(heading == 0){
         if(maze[posrow][poscol+1]  == 0){
           turnRight90();
-          goforward();
+//          goforward();
         }
         else if(maze[posrow+1][poscol] == 0){
           goforward();
           }
         else{
           turnRight90();
-          goforward();
+//          goforward();
         }
         }
-      if(heading == 90){
+      else if(heading == 90){
         if(maze[posrow-1][poscol] == 0){
           turnRight90();
-          goforward();
+//          goforward();
         }
         else if(maze[posrow][poscol+1] == 0){
           goforward();
         }
         else{
           turnRight90();
-          goforward();
+//          goforward();
         }
       }
-     if(heading == 180){
+     else if(heading == 180){
         if(maze[posrow][poscol-1] == 0){
           turnRight90();
-          goforward();
+//          goforward();
         }
         else if(maze[posrow-1][poscol] == 0){
           goforward();
         }
         else{
           turnRight90();
-          goforward();
+//          goforward();
         }
      }
-    if(heading == 270){
+    else if(heading == 270){
       if(maze[posrow+1][poscol] == 0){
         turnRight90();
-        goforward();
+//        goforward();
       }
       else if(maze[posrow][poscol-1]){
         goforward();
       }
       else{
         turnRight90();
-        goforward();
+//        goforward();
       }
     }
     }
 
-   if (path == 4){
+   else if (path == 4){
       turn180();
    }
+   Serial.println(path);
 }
 //void turn()}{
 void turnLeft90 (){
@@ -388,7 +396,7 @@ void turnLeft90 (){
   if(heading >= 360){
     heading -= 360;
   }
-  Serial.println("turning left");
+  //Serial.println("turning left");
 
 }
 void turn180 (){
@@ -401,7 +409,7 @@ void turn180 (){
   if(heading >= 360){
     heading -=360;
   }
-  Serial.println("turning around");
+  //Serial.println("turning around");
 
 }
 void turnRight90 (){
@@ -414,7 +422,7 @@ void turnRight90 (){
   if(heading >=360){
     heading -= 360;
   }
-  Serial.println("turning right");
+  //Serial.println("turning right");
 
 
 }
