@@ -199,36 +199,44 @@ else if (path == 2) {
               if(l < 15){
                 if(heading == 0){
                   if(maze[posrow+1][poscol]  == 0){
+                    Serial.println("path is 2, heading is 0, must go forward, can't go left");
                     goforward();
                   }
                   else{
+                    Serial.println("path is 2, heading is 0, must turn right, can't go left");
                     turnRight90();
 //                    goforward();
                     }
                   }
                 else if(heading == 90){
                   if(maze[posrow][poscol+1] == 0){
+                    Serial.println("path is 2, heading is 90, must go forward, can't go left");
                     goforward();
                   }
                   else{
+                    Serial.println("path is 2, heading is 90, must turn right, can't go left");
                     turnRight90();
 //                    goforward();
                   }
                 }
                else if(heading == 180){
                   if(maze[posrow-1][poscol] == 0){
-//                    goforward();
+                    Serial.println("path is 2, heading is 180, must go forward, can't go left");
+                    goforward();
                   }
                   else{
+                    Serial.println("path is 2, heading is 180, must turn right, can't go left");
                     turnRight90();
 //                    goforward();
                   }
                }
               else if(heading == 270){
                 if(maze[posrow][poscol-1] == 0){
-//                  goforward();
+                  Serial.println("path is 2, heading is 270, must go forward, can't go left");
+                  goforward();
                 }
                 else{
+                  Serial.println("path is 2, heading is 270, must turn right, can't go left");
                   turnRight90();
 //                  goforward();
                 }
@@ -241,37 +249,45 @@ else if (path == 2) {
               else if(r < 15){
                 if(heading == 0){
                   if(maze[posrow][poscol-1]  == 0){
+                    Serial.println("path is 2, heading is 0, must turn left, can't go right");
                     turnLeft90();
 //                    goforward();
                   }
                   else{
+                    Serial.println("path is 2, heading is 0, must go forward, can't go right");
                     goforward();
                     }
                   }
                 else if(heading == 90){
                   if(maze[posrow+1][poscol] == 0){
+                    Serial.println("path is 2, heading is 90, must turn left, can't go right");
                     turnLeft90();
 //                    goforward();
                   }
                   else{
+                    Serial.println("path is 2, heading is 90, must go forward, can't go right");
                     goforward();
                   }
                 }
                else if(heading == 180){
                   if(maze[posrow][poscol+1] == 0){
+                    Serial.println("path is 2, heading 180, must turn left, can't go right");
                     turnLeft90();
 //                    goforward();
                   }
                   else{
+                    Serial.println("path is 2, heading is 180, must go forward, can't go right");
                     goforward();
                   }
                }
               else if(heading == 270){
                 if(maze[posrow-1][poscol] == 0){
+                  Serial.println("path is 2, heading is 270, must turn left, can't go right");
                   turnLeft90();
 //                  goforward();
                 }
                 else{
+                  Serial.println("path is 2, heading is 270, must go forward, can't go right");
                   goforward();
                 }
               }
@@ -283,40 +299,48 @@ else if (path == 2) {
               else if(f < 15){
                 if(heading == 0){
                   if(maze[posrow][poscol-1]  == 0){
+                    Serial.println("path is 2, heading is 0, must turn left, can't go forward");
                     turnLeft90();
 //                    goforward();
                   }
                   else{
+                    Serial.println("path is 2, heading is 0, must turn right, can't go forward");
                     turnRight90();
 //                    goforward();
                     }
                   }
                else if(heading == 90){
                   if(maze[posrow+1][poscol] == 0){
+                    Serial.println("path is 2, heading is 90, must turn left, can't go forward");
                     turnLeft90();
 //                    goforward();
                   }
                   else{
+                    Serial.println("path is 2, heading is 90, must turn right, can't go forward");
                     turnRight90();
 //                    goforward();
                   }
                 }
                else if(heading == 180){
                   if(maze[posrow][poscol+1] == 0){
+                    Serial.println("path is 2, heading is 180, must turn left, can't go forward");
                     turnLeft90();
 //                    goforward();
                   }
                   else{
+                    Serial.println("path is 2, heading is 180, must turn right, can't go forward");
                     turnRight90();
 //                    goforward();
                   }
                }
               else if(heading == 270){
                 if(maze[posrow-1][poscol] == 0){
+                  Serial.println("path is 2, heading is 270, must turn left, can't go forward");
                   turnLeft90();
 //                  goforward();
                 }
                 else{
+                  Serial.println("path is 2, heading is 270, must turn right, can't go forward");
                   turnRight90();
 //                  goforward();
                 }
