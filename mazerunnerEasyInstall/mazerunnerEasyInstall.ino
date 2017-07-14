@@ -169,6 +169,7 @@ void goforward() {
   while(f > endPoint){
     f = getinches(centerPingPin, centerEchoPin);
     goforward2();
+    delay(100);
   }
   drive.setDrive(0,0);
   
